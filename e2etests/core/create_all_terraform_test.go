@@ -42,6 +42,23 @@ func TestCreateWithAllTerraformModuleAtRoot(t *testing.T) {
 	assert.NoError(t, err)
 }
 
+func TestCreateWithAllTerraformTofuJson(t *testing.T) {
+	s := sandbox.NoGit(t, true)
+	s.BuildTree([]string{
+		`f:main.tofu.json:{"terraform": {"backend": {"local": {}}}}`,
+		`f:README.md:# My module`,
+	})
+	tm := NewCLI(t, s.RootDir())
+	AssertRunResult(t,
+		tm.Run("create", "--all-terraform"),
+		RunExpected{
+			Stdout: "Created stack /\n",
+		},
+	)
+	_, err := os.Lstat(filepath.Join(s.RootDir(), stack.DefaultFilename))
+	assert.NoError(t, err)
+}
+
 func TestCreateWithAllTerraformModuleDeepDownInTheTree(t *testing.T) {
 	test := func(t *testing.T, generate bool, tags []string) {
 		s := sandbox.NoGit(t, true)

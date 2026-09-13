@@ -406,8 +406,10 @@ func (s *Spec) initTerraformDir(baseDir string) error {
 }
 
 func hasTFExt(fname string) bool {
-	ext := filepath.Ext(fname)
-	return ext == ".tf" || ext == ".tofu"
+	return strings.HasSuffix(fname, ".tf") ||
+		strings.HasSuffix(fname, ".tf.json") ||
+		strings.HasSuffix(fname, ".tofu") ||
+		strings.HasSuffix(fname, ".tofu.json")
 }
 
 func (s *Spec) ensureStackID() error {

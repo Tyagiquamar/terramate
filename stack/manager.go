@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"io/fs"
 	"os"
-	"path"
 	"path/filepath"
 	"sort"
 	"strings"
@@ -646,8 +645,10 @@ func (m *Manager) tfModuleChanged(
 }
 
 func hasTFExt(fname string) bool {
-	ext := path.Ext(fname)
-	return ext == ".tf" || ext == ".tofu"
+	return strings.HasSuffix(fname, ".tf") ||
+		strings.HasSuffix(fname, ".tf.json") ||
+		strings.HasSuffix(fname, ".tofu") ||
+		strings.HasSuffix(fname, ".tofu.json")
 }
 
 func (m *Manager) changedFiles(gitBaseRef string, dirtyFiles ...project.Path) (project.Paths, error) {

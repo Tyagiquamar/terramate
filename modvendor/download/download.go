@@ -505,5 +505,8 @@ func patchFiles(rootdir string, files []string, sources *sourcesInfo) error {
 }
 
 func hasTFExt(p string) bool {
-	return strings.HasSuffix(p, ".tf") || strings.HasSuffix(p, ".tofu")
+	return strings.HasSuffix(p, ".tf") ||
+		strings.HasSuffix(p, ".tf.json") ||
+		strings.HasSuffix(p, ".tofu") ||
+		strings.HasSuffix(p, ".tofu.json")
 }
